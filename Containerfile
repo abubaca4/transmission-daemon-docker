@@ -59,37 +59,8 @@ RUN set -ex && \
 COPY --from=builder /usr/local/bin /usr/local/bin
 COPY --from=builder /usr/local/share /usr/local/share
 
-COPY <<-"EOF" /usr/local/bin/entrypoint.sh
-#!/bin/sh
-set -e
-ARGS="--config-dir /config --foreground"
-
-if [ -n "$TRANSMISSION_WATCH_DIR" ]; then
-    ARGS="$ARGS --watch-dir $TRANSMISSION_WATCH_DIR"
-fi
-
-if [ -n "$TRANSMISSION_DOWNLOAD_DIR" ]; then
-    ARGS="$ARGS --download-dir $TRANSMISSION_DOWNLOAD_DIR"
-fi
-
-exec transmission-daemon $ARGS "$@"
-EOF
-
-COPY <<-"EOF" /usr/local/bin/healthcheck.sh
-#!/bin/sh
-PORT=9091
-if [ -f "/config/settings.json" ]; then
-    CFG_PORT=$(jq -r '.["rpc-port"] // empty' /config/settings.json)
-    if [ -n "$CFG_PORT" ]; then PORT=$CFG_PORT; fi
-fi
-
-CODE=$(curl -s -o /dev/null -w "%{http_code}" http://127.0.0.1:${PORT})
-if [ "$CODE" != "000" ]; then
-    exit 0
-else
-    exit 1
-fi
-EOF
+COPY scripts/entrypoint.sh /usr/local/bin/entrypoint.sh
+COPY scripts/healthcheck.sh /usr/local/bin/healthcheck.sh
 
 RUN chmod +x /usr/local/bin/entrypoint.sh /usr/local/bin/healthcheck.sh
 
