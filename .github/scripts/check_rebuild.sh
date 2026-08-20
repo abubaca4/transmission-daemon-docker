@@ -28,12 +28,17 @@ if ! skopeo inspect "$IMAGE_URL" > image_info.json 2>/dev/null; then
   exit 0
 fi
 
+LOCAL_HASH=$(git log -1 --format=%h -- Containerfile scripts/)
+
+BUILD_REVISION="${UPSTREAM_SHA}-${LOCAL_HASH}"
+echo "BUILD_REVISION=$BUILD_REVISION" >> $GITHUB_ENV
+
 IMAGE_SHA=$(jq -r '.Labels["org.opencontainers.image.revision"] // empty' image_info.json)
 CREATED=$(jq -r '.Created // empty' image_info.json)
 
-if [ "$IMAGE_SHA" != "$UPSTREAM_SHA" ]; then
+if [ "$IMAGE_SHA" != "$BUILD_REVISION" ]; then
   echo "should_build=true" >> $GITHUB_OUTPUT
-  echo "Reason: Upstream commit changed ($IMAGE_SHA -> $UPSTREAM_SHA)."
+  echo "Reason: Build sources or upstream changed ($IMAGE_SHA -> $BUILD_REVISION)."
   exit 0
 fi
 

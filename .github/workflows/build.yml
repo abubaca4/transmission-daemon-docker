@@ -79,7 +79,7 @@ jobs:
           build-args: BRANCH=${{ matrix.build.ref }}
           tags: ${{ steps.check.outputs.tags }}
           labels: |
-            org.opencontainers.image.revision=${{ env.UPSTREAM_SHA }}
+            org.opencontainers.image.revision=${{ env.BUILD_REVISION }}
             org.opencontainers.image.source=${{ github.server_url }}/${{ github.repository }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
