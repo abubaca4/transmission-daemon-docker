@@ -33,6 +33,8 @@ jobs:
   build:
     needs: prepare-matrix
     runs-on: ubuntu-latest
+    outputs:
+      did_build: ${{ steps.check.outputs.should_build }}
     strategy:
       matrix:
         build: ${{ fromJson(needs.prepare-matrix.outputs.matrix) }}
@@ -86,3 +88,20 @@ jobs:
             org.opencontainers.image.source=${{ github.server_url }}/${{ github.repository }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
+
+  cleanup:
+    needs: build
+    if: contains(needs.build.outputs.did_build, 'true')
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - name: Delete untagged package versions
+        uses: actions/delete-package-versions@v5
+        with:
+          package-name: ${{ github.event.repository.name }}
+          package-type: 'container'
+          delete-only-untagged-versions: 'true'
+          min-versions-to-keep: 0
