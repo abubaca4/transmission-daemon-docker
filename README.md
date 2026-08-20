@@ -1,6 +1,6 @@
 # Transmission Daemon Docker
 
-This repository provides an automatically updated, lightweight Docker image for the Transmission BitTorrent client.
+This repository provides an automatically updated, lightweight Docker image for the [Transmission](https://github.com/transmission/transmission) BitTorrent client.
 
 ## 🏷 Supported Tags
 
@@ -77,3 +77,5 @@ This project was built to address specific limitations found in other popular Tr
   * **No Manual Versioning**: There is no longer a need to manually define or maintain the version matrix; the Python generation script fetches releases directly from the GitHub API.
   * **Native ENV Support**: Stronger and more flexible support for runtime environment variables.
   * **Persistent Directories**: The `watch-dir` and `download-dir` configurations are intelligently handled and are not forcefully overwritten during container startup.
+
+### [ReTransmission version of this repository](https://github.com/abubaca4/retransmission-daemon-docker)
