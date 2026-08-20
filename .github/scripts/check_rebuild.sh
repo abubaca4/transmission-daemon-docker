@@ -46,7 +46,7 @@ if [ -n "$CREATED" ]; then
   CREATED_TS=$(date -d "$CREATED" +%s)
   NOW_TS=$(date +%s)
   AGE=$((NOW_TS - CREATED_TS))
-  if [ $AGE -gt 604800 ]; then # 7 дней
+  if [ $AGE -gt 604800 ]; then
     echo "should_build=true" >> $GITHUB_OUTPUT
     echo "Reason: Image is older than 7 days."
     exit 0
