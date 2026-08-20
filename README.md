@@ -72,8 +72,8 @@ This repository leverages GitHub Actions to ensure images remain secure and up t
 
 ## ⚖️ Comparison with Alternatives
 This project was built to address specific limitations found in other popular Transmission Docker images.
-* **vs.** `linuxserver/docker-transmission`: Instead of relying on the pre-compiled version available in the Alpine package repository, this image builds Transmission directly from its source code using CMake.
-* **vs.** `Relativ-IT/TransmissionBT`: This repository serves as a vastly improved version of Relativ-IT's setup. Key improvements include:
+* **vs.** [linuxserver/docker-transmission](https://github.com/linuxserver/docker-transmission): Instead of relying on the pre-compiled version available in the Alpine package repository, this image builds Transmission directly from its source code using CMake.
+* **vs.** [Relativ-IT/TransmissionBT](https://github.com/Relativ-IT/TransmissionBT): This repository serves as a vastly improved version of Relativ-IT's setup. Key improvements include:
   * **No Manual Versioning**: There is no longer a need to manually define or maintain the version matrix; the Python generation script fetches releases directly from the GitHub API.
   * **Native ENV Support**: Stronger and more flexible support for runtime environment variables.
   * **Persistent Directories**: The `watch-dir` and `download-dir` configurations are intelligently handled and are not forcefully overwritten during container startup.
