@@ -76,6 +76,7 @@ jobs:
           file: ./Containerfile
           platforms: linux/amd64,linux/arm64
           push: true
+          provenance: false
           build-args: BRANCH=${{ matrix.build.ref }}
           tags: ${{ steps.check.outputs.tags }}
           labels: |
