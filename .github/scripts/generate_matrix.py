@@ -3,6 +3,10 @@ import urllib.request, json, os
 req = urllib.request.Request("https://api.github.com/repos/transmission/transmission/releases")
 req.add_header("User-Agent", "GitHub-Actions")
 
+token = os.environ.get("GITHUB_TOKEN")
+if token:
+    req.add_header("Authorization", f"Bearer {token}")
+
 with urllib.request.urlopen(req) as response:
     releases = json.loads(response.read().decode())
 

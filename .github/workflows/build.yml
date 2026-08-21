@@ -28,6 +28,8 @@ jobs:
 
       - name: Fetch releases and generate matrix
         id: set-matrix
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: python .github/scripts/generate_matrix.py
 
   build:
@@ -54,6 +56,7 @@ jobs:
         env:
           REF: ${{ matrix.build.ref }}
           MATRIX_TAGS: ${{ toJSON(matrix.build.tags) }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: bash .github/scripts/check_rebuild.sh
 
       - name: Set up QEMU

@@ -5,7 +5,9 @@ PRIMARY_TAG=$(echo "$MATRIX_TAGS" | jq -r '.[0]')
 IMAGE_URL="docker://${REGISTRY}/${IMAGE_NAME}:${PRIMARY_TAG}"
 IMAGE_URL=$(echo "$IMAGE_URL" | tr '[:upper:]' '[:lower:]')
 
-UPSTREAM_SHA=$(curl -sL -H "User-Agent: GitHub-Actions" \
+UPSTREAM_SHA=$(curl -sL \
+  -H "User-Agent: GitHub-Actions" \
+  ${GITHUB_TOKEN:+-H "Authorization: Bearer $GITHUB_TOKEN"} \
   "https://api.github.com/repos/transmission/transmission/commits/$REF" | jq -r '.sha')
 
 if [ "$UPSTREAM_SHA" == "null" ] || [ -z "$UPSTREAM_SHA" ]; then
