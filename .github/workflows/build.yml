@@ -90,18 +90,13 @@ jobs:
           cache-to: type=gha,mode=max
 
   cleanup:
-    needs: build
-    if: contains(needs.build.outputs.did_build, 'true')
-    runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      packages: write
-
-    steps:
-      - name: Delete untagged package versions
-        uses: actions/delete-package-versions@v5
-        with:
-          package-name: ${{ github.event.repository.name }}
-          package-type: 'container'
-          delete-only-untagged-versions: 'true'
-          min-versions-to-keep: 0
+      needs: build
+      if: contains(needs.build.outputs.did_build, 'true')
+      runs-on: ubuntu-latest
+      permissions:
+        packages: write
+      steps:
+        - name: Delete orphaned untagged images
+          uses: dataaxiom/ghcr-cleanup-action@v1
+          with:
+            delete-untagged: true
